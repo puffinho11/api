@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agendar Mensagem no WhatsApp</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Envio automático de WhatsApp</h1>
+    <form method="POST">
+      <label for="meu_numero">Seu número (com DDI, ex: +5511999999999):</label>
+      <input type="text" id="meu_numero" name="meu_numero" required />
+
+      <label for="numero_destino">Número do destinatário (com DDI):</label>
+      <input type="text" id="numero_destino" name="numero_destino" required />
+
+      <label for="mensagem">Mensagem:</label>
+      <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+
+      <label><input type="checkbox" name="enviar_agora" id="enviar_agora" /> Enviar imediatamente (sem agendar horário)</label>
+
+      <div id="agendamento_horario">
+        <label for="hora">Hora (24h):</label>
+        <input type="number" id="hora" name="hora" min="0" max="23" />
+
+        <label for="minuto">Minuto:</label>
+        <input type="number" id="minuto" name="minuto" min="0" max="59" />
+      </div>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    {% if status %}
+      <p class="{{ 'error' if 'Erro' in status else '' }}">{{ status }}</p>
+    {% endif %}
+  </div>
+
+  <script>
+    const enviarAgoraCheckbox = document.getElementById('enviar_agora')
+    const agendamentoHorario = document.getElementById('agendamento_horario')
+    const horaInput = document.getElementById('hora')
+    const minutoInput = document.getElementById('minuto')
+
+    function toggleHorario() {
+      if (enviarAgoraCheckbox.checked) {
+        horaInput.disabled = true
+        minutoInput.disabled = true
+        agendamentoHorario.style.opacity = 0.5
+      } else {
+        horaInput.disabled = false
+        minutoInput.disabled = false
+        agendamentoHorario.style.opacity = 1
+      }
+    }
+
+    enviarAgoraCheckbox.addEventListener('change', toggleHorario)
+
+    toggleHorario()
+  </script>
+</body>
+</html>
+
+
+
+
